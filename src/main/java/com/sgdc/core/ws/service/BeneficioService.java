@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface BeneficioService {
     List<Beneficio> findAll();
 
-    Optional<Beneficio> findById(Integer id);
+    Beneficio findById(Integer id);
 
     List<Beneficio> search(String keyword);
 

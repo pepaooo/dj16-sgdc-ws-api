@@ -1,5 +1,6 @@
 package com.sgdc.core.ws.service;
 
+import com.sgdc.core.ws.exception.BeneficioNotFoundException;
 import com.sgdc.core.ws.model.Beneficio;
 import com.sgdc.core.ws.repository.BeneficioRepository;
 import jakarta.persistence.criteria.Expression;
@@ -24,8 +25,8 @@ public class BeneficioServiceImpl implements BeneficioService {
     }
 
     @Override
-    public Optional<Beneficio> findById(Integer id) {
-        return repository.findById(id);
+    public Beneficio findById(Integer id) {
+        return repository.findById(id).orElseThrow(() -> new BeneficioNotFoundException("El beneficio no existe"));
     }
 
     @Override

@@ -6,21 +6,19 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
 
-@Controller
-@RequestMapping("beneficios")
+@RestController
+@RequestMapping("/api/v1/beneficios")
 public class BeneficioController {
 
     private static final Logger log = LoggerFactory.getLogger(BeneficioController.class);
@@ -41,11 +39,10 @@ public class BeneficioController {
         return "beneficios/inicio";
     }
 
-    @GetMapping("get")
-    public String getBeneficio(@RequestParam(value = "id") Integer idBeneficio, Model model) {
-        Optional<Beneficio> beneficio = beneficioService.findById(idBeneficio);
-        model.addAttribute("beneficio", beneficio.orElse(new Beneficio()));
-        return "beneficios/ver-beneficio";
+    @GetMapping("{id}")
+    public ResponseEntity<Beneficio> getBeneficio(@PathVariable Integer id) {
+        Beneficio beneficio = beneficioService.findById(id);
+        return ResponseEntity.ok(beneficio);
     }
 
     @GetMapping("new")
@@ -78,8 +75,8 @@ public class BeneficioController {
 
     @GetMapping("change")
     public String changeBeneficio(@RequestParam(value = "id") Integer idBeneficio, Model model) {
-        Optional<Beneficio> beneficio = beneficioService.findById(idBeneficio);
-        model.addAttribute("beneficio", beneficio.orElse(new Beneficio()));
+        Beneficio beneficio = beneficioService.findById(idBeneficio);
+        model.addAttribute("beneficio", beneficio);
         return "beneficios/editar-beneficio";
     }
 
