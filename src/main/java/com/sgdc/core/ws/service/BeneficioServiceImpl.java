@@ -1,5 +1,6 @@
 package com.sgdc.core.ws.service;
 
+import com.sgdc.core.ws.exception.BeneficioAlreadyExistsException;
 import com.sgdc.core.ws.exception.BeneficioNotFoundException;
 import com.sgdc.core.ws.model.Beneficio;
 import com.sgdc.core.ws.repository.BeneficioRepository;
@@ -51,12 +52,34 @@ public class BeneficioServiceImpl implements BeneficioService {
     }
 
     @Override
-    public void save(Beneficio beneficio) {
-        repository.save(beneficio);
+    public Beneficio save(Beneficio beneficio) {
+        Optional<Beneficio> existingBeneficio = repository.findByNombre(beneficio.getNombre());
+        if (existingBeneficio.isPresent()) {
+            throw new BeneficioAlreadyExistsException("El beneficio ya existe");
+        }
+        return repository.save(beneficio);
     }
+
+   @Override
+    public Beneficio update(Integer id, Beneficio beneficio) {
+       Optional<Beneficio> existingBeneficio = repository.findById(id);
+         if (existingBeneficio.isPresent()) {
+              Beneficio updatedBeneficio = existingBeneficio.get();
+              updatedBeneficio.setNombre(beneficio.getNombre());
+              updatedBeneficio.setDescripcion(beneficio.getDescripcion());
+              return repository.save(updatedBeneficio);
+         } else {
+              throw new BeneficioNotFoundException("El beneficio no existe");
+         }
+   }
 
     @Override
     public void delete(Integer id) {
-        repository.deleteById(id);
+        Optional<Beneficio> existingBeneficio = repository.findById(id);
+        if (existingBeneficio.isPresent()) {
+            repository.delete(existingBeneficio.get());
+        } else {
+            throw new BeneficioNotFoundException("El beneficio no existe");
+        }
     }
 }

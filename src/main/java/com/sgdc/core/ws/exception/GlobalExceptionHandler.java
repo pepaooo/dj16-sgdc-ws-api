@@ -16,6 +16,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(BeneficioAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleBeneficioAlreadyExistsException(BeneficioAlreadyExistsException ex) {
+        ErrorResponse errorResponse = ErrorResponse.create(ex, HttpStatus.CONFLICT,
+                "El beneficio ya existe");
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
+
     // Puedes agregar manejadores para otras excepciones
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {

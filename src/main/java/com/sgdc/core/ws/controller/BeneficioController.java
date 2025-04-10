@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,13 +31,9 @@ public class BeneficioController {
     }
 
     @GetMapping
-    public String inicio(@RequestParam(value = "q", required = false) String keyword, Model model) {
+    public ResponseEntity<List<Beneficio>> inicio(@RequestParam(value = "q", required = false) String keyword, Model model) {
         List<Beneficio> beneficios = beneficioService.search(keyword);
-        // Agregar al modelo los resultados y también el término de búsqueda para que el input lo retenga.
-        model.addAttribute("beneficios", beneficios);
-        model.addAttribute("q", keyword);
-
-        return "beneficios/inicio";
+        return ResponseEntity.ok(beneficios);
     }
 
     @GetMapping("{id}")
@@ -45,70 +42,22 @@ public class BeneficioController {
         return ResponseEntity.ok(beneficio);
     }
 
-    @GetMapping("new")
-    public String newBeneficio(Model model) {
-        model.addAttribute("beneficio", new Beneficio());
-        return "beneficios/nuevo-beneficio";
+    @PostMapping
+    public ResponseEntity<Beneficio> createBeneficio(@Valid @RequestBody Beneficio beneficio) {
+        Beneficio beneficioCreated = beneficioService.save(beneficio);
+        return ResponseEntity.status(HttpStatus.CREATED).body(beneficioCreated);
     }
 
-    @PostMapping("create-beneficio")
-    public String createBeneficio(@Valid Beneficio beneficio, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
-        if (bindingResult.hasErrors()) {
-            for (ObjectError error : bindingResult.getAllErrors()) {
-                log.error("Ocurrió un error: {}", error.getDefaultMessage());
-            }
-            return "beneficios/nuevo-beneficio";
-        }
-
-        try {
-            log.info("Beneficio a guardar: {}", beneficio);
-            beneficioService.save(beneficio);
-        } catch (DataIntegrityViolationException e) {
-            log.error("Error de integridad de datos: {}", e.getMessage());
-            bindingResult.rejectValue("nombre", "nombre", "El nombre del beneficio ya existe. Por favor, use otro.");
-            return "beneficios/nuevo-beneficio";
-        }
-
-        redirectAttributes.addFlashAttribute("exito", "El beneficio se ha guardado correctamente");
-        return "redirect:/beneficios";
+    @PutMapping("{id}")
+    public ResponseEntity<Beneficio> updateBeneficio(@PathVariable Integer id, @Valid @RequestBody Beneficio beneficio) {
+        Beneficio updatedBeneficio = beneficioService.update(id, beneficio);
+        return ResponseEntity.ok(updatedBeneficio);
     }
 
-    @GetMapping("change")
-    public String changeBeneficio(@RequestParam(value = "id") Integer idBeneficio, Model model) {
-        Beneficio beneficio = beneficioService.findById(idBeneficio);
-        model.addAttribute("beneficio", beneficio);
-        return "beneficios/editar-beneficio";
-    }
-
-
-    @PostMapping("change-beneficio")
-    public String changeBeneficio(@Valid Beneficio beneficio, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors()) {
-            for (ObjectError error : bindingResult.getAllErrors()) {
-                log.error("Ocurrió un error: {}", error.getDefaultMessage());
-            }
-            return "beneficios/editar-beneficio";
-        }
-
-        try {
-            log.info("Membresía a guardar: {}", beneficio);
-            beneficioService.save(beneficio);
-        } catch (DataIntegrityViolationException e) {
-            log.error("Error de integridad de datos: {}", e.getMessage());
-            bindingResult.rejectValue("nombre", "nombre", "El nombre del beneficio ya existe. Por favor, use otro.");
-            return "beneficios/editar-beneficio";
-        }
-
-        redirectAttributes.addFlashAttribute("exito", "El beneficio se ha guardado correctamente");
-        return "redirect:/beneficios";
-    }
-
-    @PostMapping("delete")
-    public String deleteBeneficio(@RequestParam(value = "id") Integer idBeneficio, RedirectAttributes redirectAttributes) {
-        // Eliminar el beneficio
-        beneficioService.delete(idBeneficio);
-        redirectAttributes.addFlashAttribute("exito", "La beneficio se ha eliminado correctamente");
-        return "redirect:/beneficios";
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteBeneficio(@PathVariable Integer id) {
+        beneficioService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
