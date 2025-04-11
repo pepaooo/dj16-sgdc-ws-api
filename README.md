@@ -1,5 +1,3 @@
-Aquí tienes un ejemplo de cómo podría estructurarse el `README.md` para tu proyecto:
-
 ## Descripción
 Este proyecto es una API REST desarrollada con **Spring Boot** que gestiona entidades relacionadas con un sistema de membresías, instalaciones, beneficios y miembros. Proporciona endpoints para realizar operaciones CRUD (Crear, Leer, Actualizar y Eliminar) sobre estas entidades.
 
