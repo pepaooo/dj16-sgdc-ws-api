@@ -38,6 +38,8 @@ public class Instalacion {
 
     @ColumnDefault("'Disponible'")
     @Column(name = "estado", nullable = false, length = 20)
+    //@Enumerated(EnumType.STRING)
     private String estado;
+    //private EstadoInstalacion estado;
 
 }
