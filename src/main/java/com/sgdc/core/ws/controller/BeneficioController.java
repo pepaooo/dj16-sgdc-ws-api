@@ -5,18 +5,12 @@ import com.sgdc.core.ws.service.BeneficioService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/beneficios")
@@ -31,7 +25,7 @@ public class BeneficioController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Beneficio>> inicio(@RequestParam(value = "q", required = false) String keyword, Model model) {
+    public ResponseEntity<List<Beneficio>> findAll(@RequestParam(value = "q", required = false) String keyword, Model model) {
         List<Beneficio> beneficios = beneficioService.search(keyword);
         return ResponseEntity.ok(beneficios);
     }
