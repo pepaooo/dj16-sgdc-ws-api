@@ -156,5 +156,5 @@ curl -X POST http://localhost:8080/api/v1/miembros \
 - Los datos enviados deben cumplir con las validaciones definidas en el modelo.
 
 ## Autor
-Proyecto desarrollado por el equipo de **SGDC**.
+Proyecto desarrollado por el equipo de **José Angulo**.
 ```
