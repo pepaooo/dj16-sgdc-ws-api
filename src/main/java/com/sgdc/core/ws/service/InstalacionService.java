@@ -10,10 +10,14 @@ public interface InstalacionService {
 
     List<Instalacion> findAll();
 
-    Optional<Instalacion> findById(Integer id);
+    Instalacion findById(Integer id);
 
     List<Instalacion> search(String keyword);
 
-    void save(Instalacion instalacion);
+    Instalacion save(Instalacion instalacion);
+
+    Instalacion update(Integer id, Instalacion instalacion);
+
+    void delete(Integer id);
 
 }

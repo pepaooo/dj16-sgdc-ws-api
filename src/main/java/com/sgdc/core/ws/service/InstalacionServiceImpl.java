@@ -1,5 +1,7 @@
 package com.sgdc.core.ws.service;
 
+import com.sgdc.core.ws.exception.ResourceAlreadyExistsException;
+import com.sgdc.core.ws.exception.ResourceNotFoundException;
 import com.sgdc.core.ws.model.Instalacion;
 import com.sgdc.core.ws.repository.InstalacionRepository;
 import jakarta.persistence.criteria.Expression;
@@ -24,8 +26,8 @@ public class InstalacionServiceImpl implements InstalacionService {
     }
 
     @Override
-    public Optional<Instalacion> findById(Integer id) {
-        return repository.findById(id);
+    public Instalacion findById(Integer id) {
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("La instalación no existe"));
     }
 
     @Override
@@ -54,7 +56,35 @@ public class InstalacionServiceImpl implements InstalacionService {
     }
 
     @Override
-    public void save(Instalacion instalacion) {
-        repository.save(instalacion);
+    public Instalacion save(Instalacion instalacion) {
+        Optional<Instalacion> existingInstalacion = repository.findByNombre(instalacion.getNombre());
+        if (existingInstalacion.isPresent()) {
+            throw new ResourceAlreadyExistsException("La instalación ya existe");
+        }
+        return repository.save(instalacion);
+    }
+
+    @Override
+    public Instalacion update(Integer id, Instalacion instalacion) {
+        Optional<Instalacion> existingInstalacion = repository.findById(id);
+        if (existingInstalacion.isPresent()) {
+            Instalacion updatedInstalacion = existingInstalacion.get();
+            updatedInstalacion.setNombre(instalacion.getNombre());
+            updatedInstalacion.setDescripcion(instalacion.getDescripcion());
+            updatedInstalacion.setEstado(instalacion.getEstado());
+            return repository.save(updatedInstalacion);
+        } else {
+            throw new ResourceNotFoundException("La instalación no existe");
+        }
+    }
+
+    @Override
+    public void delete(Integer id) {
+        Optional<Instalacion> existingInstalacion = repository.findById(id);
+        if (existingInstalacion.isPresent()) {
+            repository.delete(existingInstalacion.get());
+        } else {
+            throw new ResourceNotFoundException("La instalación no existe");
+        }
     }
 }
