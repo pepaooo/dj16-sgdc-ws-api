@@ -10,14 +10,18 @@ public interface MembresiaService {
 
     List<Membresia> findAll();
 
-    Optional<Membresia> findById(Integer id);
+    Membresia findById(Integer id);
 
     List<Membresia> search(String keyword);
 
-    void save(Membresia membresia);
+    Membresia save(Membresia membresia);
 
     Optional<Membresia> activateMembresia(Integer id);
 
     Optional<Membresia> deactivateMembresia(Integer id);
+
+    Membresia update(Integer id, Membresia membresia);
+
+    void delete(Integer id);
 
 }

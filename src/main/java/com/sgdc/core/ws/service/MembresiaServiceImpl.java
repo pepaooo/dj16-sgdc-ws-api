@@ -1,5 +1,8 @@
 package com.sgdc.core.ws.service;
 
+import com.sgdc.core.ws.exception.ResourceAlreadyExistsException;
+import com.sgdc.core.ws.exception.ResourceNotFoundException;
+import com.sgdc.core.ws.model.Instalacion;
 import com.sgdc.core.ws.model.Membresia;
 import com.sgdc.core.ws.repository.MembresiaRepository;
 import jakarta.persistence.criteria.Expression;
@@ -24,8 +27,8 @@ public class MembresiaServiceImpl implements MembresiaService {
     }
 
     @Override
-    public Optional<Membresia> findById(Integer id) {
-        return repository.findById(id);
+    public Membresia findById(Integer id) {
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("La membresía no existe"));
     }
 
     @Override
@@ -55,8 +58,12 @@ public class MembresiaServiceImpl implements MembresiaService {
     }
 
     @Override
-    public void save(Membresia membresia) {
-        repository.save(membresia);
+    public Membresia save(Membresia membresia) {
+        Optional<Membresia> existingMembresia = repository.findByNombre(membresia.getNombre());
+        if (existingMembresia.isPresent()) {
+            throw new ResourceAlreadyExistsException("La membresía ya existe");
+        }
+        return repository.save(membresia);
     }
 
     @Override
@@ -79,5 +86,31 @@ public class MembresiaServiceImpl implements MembresiaService {
             return Optional.of(repository.save(m));
         }
         return Optional.empty();
+    }
+
+    @Override
+    public Membresia update(Integer id, Membresia membresia) {
+        Optional<Membresia> existingMembresia = repository.findById(id);
+        if (existingMembresia.isPresent()) {
+            Membresia updatedMembresia = existingMembresia.get();
+            updatedMembresia.setNombre(membresia.getNombre());
+            updatedMembresia.setDescripcion(membresia.getDescripcion());
+            updatedMembresia.setEstatus(membresia.getEstatus());
+            updatedMembresia.setTarifa(membresia.getTarifa());
+            updatedMembresia.setDuracionDias(membresia.getDuracionDias());
+            return repository.save(updatedMembresia);
+        } else {
+            throw new ResourceNotFoundException("La membresía no existe");
+        }
+    }
+
+    @Override
+    public void delete(Integer id) {
+        Optional<Membresia> existingMembresia = repository.findById(id);
+        if (existingMembresia.isPresent()) {
+            repository.delete(existingMembresia.get());
+        } else {
+            throw new ResourceNotFoundException("La membresía no existe");
+        }
     }
 }
