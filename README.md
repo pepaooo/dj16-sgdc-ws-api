@@ -22,14 +22,18 @@ Este proyecto es una API REST desarrollada con **Spring Boot** que gestiona enti
    git clone <URL_DEL_REPOSITORIO>
    cd dj16-sgdc-ws-api
    ```
-2. Configura la conexión a la base de datos en `src/main/resources/application.properties`:
+2. Crea la base de datos utilizando el esquema proporcionado en el archivo `schema.sql` ubicado en `src/main/resources`:
+   ```sql
+   -- Ejecuta el contenido del archivo schema.sql en tu servidor de base de datos
+   ```
+3. Configura la conexión a la base de datos en `src/main/resources/application.properties`:
    ```properties
    spring.datasource.url=jdbc:mariadb://localhost:3306/tu_base_de_datos
    spring.datasource.username=tu_usuario
    spring.datasource.password=tu_contraseña
    spring.jpa.hibernate.ddl-auto=update
    ```
-3. Compila y ejecuta el proyecto:
+4. Compila y ejecuta el proyecto:
    ```bash
    mvn clean install
    mvn spring-boot:run
