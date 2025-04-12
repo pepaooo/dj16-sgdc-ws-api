@@ -35,6 +35,14 @@ Este proyecto es una API REST desarrollada con **Spring Boot** que gestiona enti
    mvn spring-boot:run
    ```
 
+## Documentación de la API
+Esta API está documentada utilizando **OpenAPI**. Puedes consultar la documentación interactiva generada automáticamente accediendo a la siguiente URL mientras el servidor está en ejecución:
+
+- **Swagger UI**: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+- **Especificación OpenAPI (JSON)**: [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
+
+La documentación incluye detalles sobre los endpoints, parámetros, cuerpos de solicitud y respuestas.
+
 ## Endpoints disponibles
 ### Miembros
 #### Obtener todos los miembros
@@ -157,4 +165,4 @@ curl -X POST http://localhost:8080/api/v1/miembros \
 
 ## Autor
 Proyecto desarrollado por el equipo de **José Angulo**.
-```
+````
