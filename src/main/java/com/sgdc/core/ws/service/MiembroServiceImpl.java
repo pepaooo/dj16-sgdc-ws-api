@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -96,6 +97,11 @@ public class MiembroServiceImpl implements MiembroService {
         }
         miembro.setMembresia(membresiaOptional.get());
 
+        // Establecemos la fecha de inscripción
+        miembro.setFechaInscripcion(LocalDateTime.now());
+
+        log.info("Miembro a guardar: {}", miembro);
+
         // Guardamos el miembro
         Miembro savedMiembro = repository.save(miembro);
         return mapper.toDto(savedMiembro);
@@ -103,21 +109,23 @@ public class MiembroServiceImpl implements MiembroService {
 
     @Override
     public MiembroDTO update(Integer id, MiembroDTO miembroDTO) {
-        // Mapeamos el DTO a la entidad
-        Miembro miembro = mapper.toEntity(miembroDTO);
-        miembro.setId(id);
-        miembro.setGenero(fromLabel(Genero.class, miembroDTO.getGenero()));
+        Miembro miembro = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Miembro no encontrado"));
+        // Aplicamos los cambios del DTO sobre la entidad existente
+        mapper.updateFromDto(miembroDTO, miembro);
+        log.info("Miembro actualizado: {}", miembro);
 
-        Optional<Miembro> optional = repository.findByCorreoElectronico(miembro.getCorreoElectronico());
-        if (optional.isPresent() && !optional.get().getId().equals(id)) {
+        // Validamos correo duplicado
+        Optional<Miembro> miembroOptional = repository.findByCorreoElectronico(miembro.getCorreoElectronico());
+        if (miembroOptional.isPresent() && !miembroOptional.get().getId().equals(id)) {
             throw new ResourceAlreadyExistsException("El miembro ya existe registrado con ese correo electrónico");
         }
 
-        Optional<Membresia> membresiaOptional = membresiaRepository.findById(miembroDTO.getIdMembresia());
-        if (membresiaOptional.isEmpty()) {
-            throw new ResourceNotFoundException("La membresía no existe");
-        }
-        miembro.setMembresia(membresiaOptional.get());
+        // Actualizamos el género y la membresía manualmente
+        miembro.setGenero(fromLabel(Genero.class, miembroDTO.getGenero()));
+
+        miembro.setMembresia(membresiaRepository.findById(miembroDTO.getIdMembresia())
+                .orElseThrow(() -> new ResourceNotFoundException("La membresía no existe")));
 
         // Guardamos el miembro
         Miembro updatedMiembro = repository.save(miembro);

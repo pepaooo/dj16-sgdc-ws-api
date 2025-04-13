@@ -1,7 +1,6 @@
 package com.sgdc.core.ws.controller;
 
 import com.sgdc.core.ws.dto.MiembroDTO;
-import com.sgdc.core.ws.model.Miembro;
 import com.sgdc.core.ws.service.MiembroService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -17,8 +16,6 @@ import java.util.List;
 @RequestMapping("/api/v1/miembros")
 public class MiembroController {
 
-    private static final Logger logger = LoggerFactory.getLogger(MiembroController.class);
-    
     private final MiembroService miembroService;
 
     public MiembroController(MiembroService miembroService) {

@@ -1,5 +1,6 @@
 package com.sgdc.core.ws.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sgdc.core.ws.model.Genero;
 import com.sgdc.core.ws.validation.EnumValue;
 import jakarta.validation.constraints.*;
@@ -8,6 +9,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
 
 @Data
 public class MiembroDTO {
@@ -19,11 +22,11 @@ public class MiembroDTO {
 
     @NotBlank(message = "El apellido paterno del miembro no puede estar vacío")
     @Size(max = 50, message = "El apellido paterno del miembro no pueden tener más de 50 caracteres")
-    private String apellidoPaterno;
+    private String paterno;
 
     @NotBlank(message = "El apellido materno del miembro no puede estar vacío")
     @Size(max = 50, message = "El apellido materno del miembro no pueden tener más de 50 caracteres")
-    private String apellidoMaterno;
+    private String materno;
 
     @NotBlank(message = "La dirección del miembro no puede estar vacía")
     @Size(max = 255, message = "La dirección del miembro no puede tener más de 255 caracteres")
@@ -35,7 +38,7 @@ public class MiembroDTO {
 
     @NotBlank(message = "El correo electrónico del miembro no puede estar vacío")
     @Email(message = "El correo electrónico del miembro no es válido")
-    private String correoElectronico;
+    private String correo;
 
     @NotNull(message = "La fecha de nacimiento del miembro no puede estar vacía")
     @Past(message = "La fecha de nacimiento del miembro no es válida")
@@ -47,6 +50,7 @@ public class MiembroDTO {
     @EnumValue(enumClass = Genero.class, enumMethod = "getLabel", message = "El género del miembro no es válido")
     private String genero; // Aquí va el label ("Masculino", "Femenino", "Otro")
 
+    @JsonProperty(access = READ_ONLY)
     private LocalDateTime fechaInscripcion;
 
     @NotNull(message = "El identificador de la membresía del miembro no puede estar vacía")

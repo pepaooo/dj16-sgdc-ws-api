@@ -60,21 +60,19 @@ La documentación incluye detalles sobre los endpoints, parámetros, cuerpos de 
 
 #### Crear un nuevo miembro
 - **POST** `/api/v1/miembros`
-- **Cuerpo de la solicitud**:
+  - **Cuerpo de la solicitud**:
   ```json
   {
-    "nombre": "Juan",
-    "apellidoPaterno": "Pérez",
-    "apellidoMaterno": "López",
-    "direccion": "Calle Falsa 123",
-    "telefono": "123456789",
-    "correoElectronico": "juan.perez@example.com",
-    "fechaNacimiento": "1990-01-01",
-    "genero": "M",
-    "fechaInscripcion": "2025-04-08T00:53:02",
-    "membresia": {
-      "id": 1
-    }
+    "nombre": "Jose",
+    "paterno": "Angulo",
+    "materno": "Cabello",
+    "direccion": "Mexico 1",
+    "telefono": "565656",
+    "correo": "jose@correo.com",
+    "fechaNacimiento": "2022-03-31",
+    "genero": "Masculino",
+    "fechaInscripcion": "2025-04-18T00:53:15",
+    "idMembresia": "5"
   }
   ```
 - **Respuesta**: Miembro creado.

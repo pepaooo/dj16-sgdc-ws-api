@@ -69,11 +69,12 @@ public class Miembro {
     @Enumerated(EnumType.STRING)
     private Genero genero;
 
-    //@NotBlank(message = "La fecha de inscripción del miembro no puede estar vacía")
+    @PastOrPresent(message = "La fecha de inscripción del miembro no es válida. No puede ser futura")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @Column(name = "fecha_inscripcion", nullable = false)
     private LocalDateTime fechaInscripcion;
 
-    //@NotNull
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "id_membresia", nullable = false)
     //@JsonBackReference

@@ -3,8 +3,6 @@ package com.sgdc.core.ws.controller;
 import com.sgdc.core.ws.model.Beneficio;
 import com.sgdc.core.ws.service.BeneficioService;
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -15,8 +13,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/beneficios")
 public class BeneficioController {
-
-    private static final Logger log = LoggerFactory.getLogger(BeneficioController.class);
 
     private final BeneficioService beneficioService;
 
