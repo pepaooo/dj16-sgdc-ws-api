@@ -71,7 +71,6 @@ La documentación incluye detalles sobre los endpoints, parámetros, cuerpos de 
     "correo": "jose@correo.com",
     "fechaNacimiento": "2022-03-31",
     "genero": "Masculino",
-    "fechaInscripcion": "2025-04-18T00:53:15",
     "idMembresia": "5"
   }
   ```
@@ -147,17 +146,14 @@ curl -X POST http://localhost:8080/api/v1/miembros \
 -H "Content-Type: application/json" \
 -d '{
   "nombre": "Juan",
-  "apellidoPaterno": "Pérez",
-  "apellidoMaterno": "López",
+  "paterno": "Pérez",
+  "materno": "López",
   "direccion": "Calle Falsa 123",
   "telefono": "123456789",
-  "correoElectronico": "juan.perez@example.com",
+  "correo": "juan.perez@example.com",
   "fechaNacimiento": "1990-01-01",
-  "genero": "M",
-  "fechaInscripcion": "2025-04-08T00:53:02",
-  "membresia": {
-    "id": 1
-  }
+  "genero": "Masculino",
+  "idMembresia": "1"
 }'
 ```
 
