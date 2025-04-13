@@ -44,9 +44,9 @@ public class MembresiasController {
         return ResponseEntity.ok(updatedMembresia);
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteMembresia(@PathVariable Integer id) {
-        membresiaService.delete(id);
-        return ResponseEntity.noContent().build();
-    }
+//    @DeleteMapping("{id}")
+//    public ResponseEntity<Void> deleteMembresia(@PathVariable Integer id) {
+//        membresiaService.delete(id);
+//        return ResponseEntity.noContent().build();
+//    }
 }

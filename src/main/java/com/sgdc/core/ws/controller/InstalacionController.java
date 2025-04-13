@@ -44,10 +44,10 @@ public class InstalacionController {
         return ResponseEntity.ok(updatedInstalacion);
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteInstalacion(@PathVariable Integer id) {
-        instalacionService.delete(id);
-        return ResponseEntity.noContent().build();
-    }
+//    @DeleteMapping("{id}")
+//    public ResponseEntity<Void> deleteInstalacion(@PathVariable Integer id) {
+//        instalacionService.delete(id);
+//        return ResponseEntity.noContent().build();
+//    }
 
 }
