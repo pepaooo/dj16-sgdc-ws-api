@@ -1,5 +1,7 @@
 package com.sgdc.core.ws.model;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum Genero {
     M("Masculino"),
     F("Femenino"),
@@ -11,6 +13,7 @@ public enum Genero {
         this.label = label;
     }
 
+    @JsonValue
     public String getLabel() {
         return label;
     }

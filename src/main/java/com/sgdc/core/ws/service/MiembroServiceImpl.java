@@ -1,10 +1,14 @@
 package com.sgdc.core.ws.service;
 
+import com.sgdc.core.ws.dto.MiembroDTO;
 import com.sgdc.core.ws.exception.ResourceAlreadyExistsException;
 import com.sgdc.core.ws.exception.ResourceNotFoundException;
 import com.sgdc.core.ws.model.Miembro;
 import com.sgdc.core.ws.repository.MiembroRepository;
 import jakarta.persistence.criteria.Expression;
+import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -15,20 +19,27 @@ import java.util.Optional;
 @Service
 public class MiembroServiceImpl implements MiembroService {
 
+    private static final Logger log = LoggerFactory.getLogger(MiembroServiceImpl.class);
+
     private final MiembroRepository repository;
 
-    public MiembroServiceImpl(MiembroRepository repository) {
+    private final ModelMapper modelMapper;
+
+    public MiembroServiceImpl(MiembroRepository repository, ModelMapper modelMapper) {
         this.repository = repository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
-    public List<Miembro> findAll() {
+    public List<MiembroDTO> findAll() {
         return List.of();
     }
 
     @Override
-    public Miembro findById(Integer id) {
-        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("El miembro no existe"));
+    public MiembroDTO findById(Integer id) {
+        Miembro miembro = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("El miembro no existe"));
+        log.info("Miembro encontrado: {}", miembro);
+        return modelMapper.map(miembro, MiembroDTO.class);
     }
 
     @Override

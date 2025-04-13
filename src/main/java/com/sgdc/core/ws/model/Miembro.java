@@ -66,9 +66,8 @@ public class Miembro {
     //@Pattern(regexp = "M|F|O")
     @NotNull(message = "El género del miembro no puede estar vacío")
     @Column(name = "genero", nullable = false, length = 1)
-    //@Enumerated(EnumType.STRING)
-    //private Genero genero;
-    private String genero;
+    @Enumerated(EnumType.STRING)
+    private Genero genero;
 
     //@NotBlank(message = "La fecha de inscripción del miembro no puede estar vacía")
     @Column(name = "fecha_inscripcion", nullable = false)
@@ -77,6 +76,6 @@ public class Miembro {
     //@NotNull
     @ManyToOne
     @JoinColumn(name = "id_membresia", nullable = false)
-    @JsonBackReference
+    //@JsonBackReference
     private Membresia membresia;
 }
