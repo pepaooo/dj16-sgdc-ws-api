@@ -1,8 +1,9 @@
 package com.sgdc.core.ws.model;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.sgdc.core.ws.util.EnumMapperUtils;
 
-public enum Genero {
+public enum Genero implements EnumMapperUtils.LabeledEnum {
     M("Masculino"),
     F("Femenino"),
     O("Otro");

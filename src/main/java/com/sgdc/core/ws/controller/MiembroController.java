@@ -26,8 +26,8 @@ public class MiembroController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Miembro>> findAll(@RequestParam(value = "q", required = false) String keyword, Model model) {
-        List<Miembro> miembros = miembroService.search(keyword);
+    public ResponseEntity<List<MiembroDTO>> findAll(@RequestParam(value = "q", required = false) String keyword, Model model) {
+        List<MiembroDTO> miembros = miembroService.search(keyword);
         return ResponseEntity.ok(miembros);
     }
 
@@ -38,8 +38,8 @@ public class MiembroController {
     }
 
     @PostMapping
-    public ResponseEntity<Miembro> guardarMiembro(@Valid @RequestBody Miembro miembro) {
-        Miembro createdMiembro = miembroService.save(miembro);
+    public ResponseEntity<MiembroDTO> guardarMiembro(@Valid @RequestBody MiembroDTO miembro) {
+        MiembroDTO createdMiembro = miembroService.save(miembro);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdMiembro);
     }
 
