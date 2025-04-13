@@ -82,8 +82,7 @@ La documentación incluye detalles sobre los endpoints, parámetros, cuerpos de 
 - **Respuesta**: Miembro actualizado.
 
 #### Eliminar un miembro
-- **DELETE** `/api/v1/miembros/{id}`
-- **Respuesta**: Código de estado 204 (No Content).
+- No es posible eliminar un miembro directamente.
 
 ### Membresías
 #### Obtener todas las membresías

@@ -46,10 +46,10 @@ public class MiembroController {
         return ResponseEntity.ok(updatedMiembro);
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteMiembro(@PathVariable Integer id) {
-        miembroService.delete(id);
-        return ResponseEntity.noContent().build();
-    }
+//    @DeleteMapping("{id}")
+//    public ResponseEntity<Void> deleteMiembro(@PathVariable Integer id) {
+//        miembroService.delete(id);
+//        return ResponseEntity.noContent().build();
+//    }
     
 }
