@@ -16,7 +16,7 @@ public interface MiembroService {
 
     MiembroDTO save(MiembroDTO miembroDTO);
 
-    Miembro update(Integer id, Miembro Miembro);
+    MiembroDTO update(Integer id, MiembroDTO miembroDTO);
 
     void delete(Integer id);
 

@@ -102,20 +102,26 @@ public class MiembroServiceImpl implements MiembroService {
     }
 
     @Override
-    public Miembro update(Integer id, Miembro miembro) {
-        Optional<Miembro> optional = repository.findById(id);
-        if (optional.isEmpty()) {
-            throw new ResourceNotFoundException("El miembro no existe");
+    public MiembroDTO update(Integer id, MiembroDTO miembroDTO) {
+        // Mapeamos el DTO a la entidad
+        Miembro miembro = mapper.toEntity(miembroDTO);
+        miembro.setId(id);
+        miembro.setGenero(fromLabel(Genero.class, miembroDTO.getGenero()));
+
+        Optional<Miembro> optional = repository.findByCorreoElectronico(miembro.getCorreoElectronico());
+        if (optional.isPresent() && !optional.get().getId().equals(id)) {
+            throw new ResourceAlreadyExistsException("El miembro ya existe registrado con ese correo electrónico");
         }
-        Miembro existingMiembro = optional.get();
-        existingMiembro.setNombre(miembro.getNombre());
-        existingMiembro.setApellidoPaterno(miembro.getApellidoPaterno());
-        existingMiembro.setApellidoMaterno(miembro.getApellidoMaterno());
-        existingMiembro.setDireccion(miembro.getDireccion());
-        existingMiembro.setTelefono(miembro.getTelefono());
-        existingMiembro.setCorreoElectronico(miembro.getCorreoElectronico());
-        existingMiembro.setFechaNacimiento(miembro.getFechaNacimiento());
-        return repository.save(existingMiembro);
+
+        Optional<Membresia> membresiaOptional = membresiaRepository.findById(miembroDTO.getIdMembresia());
+        if (membresiaOptional.isEmpty()) {
+            throw new ResourceNotFoundException("La membresía no existe");
+        }
+        miembro.setMembresia(membresiaOptional.get());
+
+        // Guardamos el miembro
+        Miembro updatedMiembro = repository.save(miembro);
+        return mapper.toDto(updatedMiembro);
     }
 
     @Override

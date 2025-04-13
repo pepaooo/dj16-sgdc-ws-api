@@ -44,8 +44,8 @@ public class MiembroController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Miembro> changeMiembro(@PathVariable Integer id, @Valid @RequestBody Miembro miembro) {
-        Miembro updatedMiembro = miembroService.update(id, miembro);
+    public ResponseEntity<MiembroDTO> changeMiembro(@PathVariable Integer id, @Valid @RequestBody MiembroDTO miembro) {
+        MiembroDTO updatedMiembro = miembroService.update(id, miembro);
         return ResponseEntity.ok(updatedMiembro);
     }
 
